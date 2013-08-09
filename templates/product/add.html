@@ -1,0 +1,16 @@
+{% extends "layouts/static_page.html" %}
+
+{% block static_title %}New Product{% endblock %}
+
+{% block static_content %}
+
+    <div class="row">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{% url 'product.views.management' %}" class="btn">cancel</a>
+        </form>
+    </div>
+{% endblock %}

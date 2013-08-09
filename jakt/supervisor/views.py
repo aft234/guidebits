@@ -31,9 +31,9 @@ def next (request):
 
     default = "/"
     if request.user.is_authenticated():
-        if request.user.is_superuser:
-            default = reverse("supervisor.views.management")
         default = reverse("product.views.all")
+        if request.user.is_staff:
+            default = reverse("product.views.management")
         if request.user.email == "blank@twitterlogin.com":
             default = reverse("supervisor.views.add_email")
     return HttpResponseRedirect(request.session.get("next-url", default))

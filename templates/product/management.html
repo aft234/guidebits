@@ -1,0 +1,28 @@
+{% extends "layouts/static_page.html" %}
+
+{% block static_title %}Manage Products{% endblock %}
+
+{% block static_content %}
+
+    <div class="row">
+        <a href="{% url 'product.views.add' %}" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add Product</a>
+        {% if products %}
+        <table class="table table-bordered">
+            <thead>
+                <th>Name</th>
+                <th>Related Names</th>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td><a href="{% url 'product.views.edit' pk=product.pk %}">{{ product.name }}</a></td>
+                    <td>{{ product.related_names }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="alert alert-info">No products!</p>
+        {% endif %}
+    </div>
+{% endblock %}
