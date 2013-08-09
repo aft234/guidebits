@@ -1,4 +1,8 @@
 # coding=utf-8
-from django.http import HttpResponse, HttpResponseRedirect
+
+from django.shortcuts import render
+from .models import Product
 def all (request):
-    return HttpResponse("products..")
+    data = {}
+    data["products"] = Product.objects.all()
+    return render(request, "product/all.html", data)

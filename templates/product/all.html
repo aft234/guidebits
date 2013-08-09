@@ -1,0 +1,14 @@
+{% extends "layouts/static_page.html" %}
+
+{% block static_title %}All Products{% endblock %}
+
+{% block static_content %}
+
+    <div class="row">
+        {% for product in products %}
+        <div class="span10">{{ product.name }} {{ product.related_names }}</div>
+        {% empty %}
+        <p class="alert alert-info">No products!</p>
+        {% endfor %}
+    </div>
+{% endblock %}
