@@ -7,8 +7,8 @@
         {% else %}
         <h1>Login</h1>
         <div class="">
-            <a href="{% url 'supervisor.views.login' out=1 %}" id="fb-login" class="span4 offset4">
-                <img src="{{ STATIC_URL }}images/facebook-login.jpg" alt="" class="">
+            <a href="{% url 'supervisor.views.login' out='twitter' %}" class="btn btn-primary btn-large">
+                Login with Twitter
             </a>
         </div>
         {% endif %}

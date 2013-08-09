@@ -48,3 +48,6 @@ class SignupForm (forms.Form):
                 raise forms.ValidationError("That username already exists.")
 
         return cleaned_data
+
+class EmailForm (forms.Form):
+    email = forms.EmailField()

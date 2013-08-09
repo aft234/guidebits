@@ -10,6 +10,8 @@ from django.conf import settings
 
 # Project imports
 from utility import annoying as a
+from singly import combined
+from singly import http
 
 # Internal imports
 from .models import User
@@ -50,6 +52,8 @@ def login (request, data):
                 user.singly_token = singly_token
                 user.username = username
                 user.email = email
+                if not user.email:
+                    user.email = "blank@twitterlogin.com"
                 user.save()
             else:
                 if not combined.merge(singly_token, user.singly_token):

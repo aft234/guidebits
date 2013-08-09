@@ -1,0 +1,19 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+    <div class="container add-email">
+        <div class="row">
+            <div class="span12">
+                <h3>Please add an email address below</h3>
+                <div class="row">
+                    <form method="post" class="span4 offset4">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <center><button class="btn btn-blue" type="submit">Save</button></center>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
