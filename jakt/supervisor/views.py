@@ -61,3 +61,6 @@ def login (request, out=None):
 def logout (request):
     dj_logout(request)
     return HttpResponseRedirect("/")
+
+def bounce (request):
+    pass
