@@ -13,7 +13,7 @@ def set_from_dict (d, *args):
 INTERNAL_IPS = ("127.0.0.1", "0.0.0.0",)
 
 # Switch out the user model
-# AUTH_USER_MODEL = 'supervisor.User'
+AUTH_USER_MODEL = 'supervisor.User'
 
 DEBUG = False
 if os.environ.get("DEBUG", None) is not None:
@@ -74,7 +74,7 @@ if os.environ.get("DATABASE_URL", None):
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = [ "0.0.0.0:8007" ]
+ALLOWED_HOSTS = [ "0.0.0.0:9002" ]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -120,11 +120,6 @@ STATIC_URL = os.environ.get("STATIC_URL", "/static/")
 if os.environ.get("STATICFILES_STORAGE"):
     STATICFILES_STORAGE = os.environ.get("STATICFILES_STORAGE")
 
-# Heroku prevents us from leaving this in the environment
-AWS_ACCESS_KEY_ID = ""
-AWS_SECRET_ACCESS_KEY = ""
-AWS_STORAGE_BUCKET_NAME = ""
-
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -159,7 +154,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
@@ -188,6 +183,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django.contrib.admin',
     'south',
+    'supervisor',
     'frontend',
     'app',
 )
