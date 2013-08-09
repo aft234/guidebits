@@ -184,6 +184,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'supervisor',
+    'product',
     'frontend',
     'app',
 )
