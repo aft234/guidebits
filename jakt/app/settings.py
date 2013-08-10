@@ -1,6 +1,6 @@
 # coding=utf-8
 # Django settings
-import os, sys, warnings, dj_database_url
+import os, sys, warnings, dj_database_url, djcelery
 from django.core.exceptions import ImproperlyConfigured
 
 def set_from_dict (d, *args):
@@ -23,6 +23,13 @@ TEMPLATE_DEBUG = DEBUG
 ALLOW_SIGNUP = True
 if os.environ.get("ALLOW_SIGNUP", True) is not True:
     ALLOW_SIGNUP = False
+
+BUGSNAG = {
+    "api_key": os.environ.get("BUGSNAG_KEY", None),
+    "project_root": os.path.abspath(""),
+    "notify_release_stages" : ["production", "staging"],
+    "release_stage" : os.environ.get("BUGSNAG_STAGE", "production")
+}
 
 CACHES = {
     'default': {
@@ -71,6 +78,12 @@ DATABASES = {
 
 if os.environ.get("DATABASE_URL", None):
     DATABASES['default'] = dj_database_url.config()
+
+# Setup celery
+BROKER_BACKEND = "django"
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+CELERY_DISABLE_RATE_LIMITS = True
+djcelery.setup_loader()
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -183,6 +196,8 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django.contrib.admin',
     'south',
+    'djcelery',
+    'kombu.transport.django',
     'supervisor',
     'product',
     'frontend',
