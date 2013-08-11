@@ -161,7 +161,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = None
+SECRET_KEY = "hjfp(&zi@2c_6$$!i79ao05mlg!k0y%$e-fzjk^&*dda4sallq9-0uzb-^@z-7(*!5l0+5&it09"
 if not DEBUG and not SECRET_KEY:
     raise ImproperlyConfigured("No secret key set for new project.")
 elif not SECRET_KEY:
