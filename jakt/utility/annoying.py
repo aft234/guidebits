@@ -55,12 +55,17 @@ def get_or_none (Model, use_objects=None, **kw):
         pass
     return obj
 
-def get_or_gone (*args, **kwargs):
-    """Raises Http404 if the object doesn't exist."""
+def get_or_raise (*args, **kwargs):
+    E = kwargs.pop("exception", LookupError)
     obj = get_or_none(*args, **kwargs)
     if not obj:
-        raise Http404
+        raise E
     return obj
+
+def get_or_gone (*args, **kwargs):
+    """Raises Http404 if the object doesn't exist."""
+    kwargs["exception"] = Http404
+    return get_or_raise(*args, **kwargs)
 
 def default_if_none (obj, default):
     """Allows you to set a default value to something if it is None."""

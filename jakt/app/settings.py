@@ -56,6 +56,10 @@ MANAGERS = ADMINS
 # Singly stuff
 SINGLY_CLIENT_ID = os.environ.get("SINGLY_CLIENT_ID")
 SINGLY_CLIENT_SECRET = os.environ.get("SINGLY_CLIENT_SECRET")
+SINGLY_URL = os.environ.get("SINGLY_URL")
+
+TWITTER_KEY = os.environ.get("TWITTER_KEY")
+TWITTER_SECRET = os.environ.get("TWITTER_SECRET")
 
 # Email
 set_from_dict(os.environ, "EMAIL_BACKEND", "EMAIL_HOST", "SENDGRID_USERNAME", "SENDGRID_PASSWORD", "EMAIL_PORT")

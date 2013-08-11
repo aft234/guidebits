@@ -5,18 +5,20 @@
 {% block static_content %}
 
     <div class="row">
-        <a href="{% url 'product.views.add' %}" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add Product</a>
+        <p><a href="{% url 'product.views.add' %}" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add Product</a></p>
         {% if products %}
         <table class="table table-bordered">
             <thead>
                 <th>Name</th>
                 <th>Related Names</th>
+                <th>Searches</th>
             </thead>
             <tbody>
                 {% for product in products %}
                 <tr>
                     <td><a href="{% url 'product.views.edit' pk=product.pk %}">{{ product.name }}</a></td>
                     <td>{{ product.related_names }}</td>
+                    <td><a href="{% url 'product.views.searches' pk=product.pk %}">{{ product.search_set.count }} search{{ product.search_set.count|pluralize }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

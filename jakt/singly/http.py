@@ -2,14 +2,14 @@
 import logging, requests
 logger = logging.getLogger(__name__)
 
-from singly import client_id, client_secret
+from singly import client_id, client_secret, api_url
 
 SERVICE_SCOPES = {
     "facebook" : "email,offline_access",
     "linkedin" : "r_emailaddress r_fullprofile"
 }
 
-BASE_URL = "https://api.singly.com"
+BASE_URL = api_url
 
 class MethodManager (object):
     """Base Context Manager the handles repetative arguments and logging."""
@@ -19,55 +19,65 @@ class MethodManager (object):
         self.method = method
         self.url = url
         self.args = args
+        self.session = None
+        if "session" in kwargs:
+            self.session = kwargs.get("session")
+            del kwargs["session"]
         self.kwargs = kwargs
 
     def __enter__ (self):
         """Handles a request start."""
-        logger.debug("{method} fetching {url} with {args} and {kwargs}".format(method=self.method.upper(), url=self.url, args=self.args, kwargs=self.kwargs))
+        logger.debug(u"{method} fetching {url} with {args} and {kwargs}".format(method=self.method.upper(), url=self.url, args=self.args, kwargs=self.kwargs))
+        try:
+            assert self.url is not None
+            self.r = getattr(self.reqs, self.method)(self.url, *self.args, **self.kwargs)
+        except:
+            if not self.__exit__(*sys.exc_info()):
+                raise
+        else:
+            if isinstance(getattr(self, "r", None), requests.models.Response):
+                return self.r
 
     def __exit__ (self, ext_type, value, traceback):
         """Handles a request exit and exception checking."""
-        logger.debug("Exiting {method} with {status} for {url}".format(method=self.method.upper(), status=self.r.status_code, url=self.r.url))
+        if isinstance(getattr(self, "r", None), requests.models.Response):
+            logger.debug(u"Exiting {method} with {status} for {url}".format(method=self.method.upper(), status=self.r.status_code, url=self.r.url))
+        else:
+            logger.error(u"Exiting {method} with no response object".format(method=self.method.upper()))
+            logger.error(u"{0} {1} {2}".format(ext_type, value, traceback))
         if value and issubclass(ext_type, BaseException):
             logger.exception(value)
             logger.error(traceback)
-            logger.warn("Exit {method} threw an exception".format(method=self.method.upper()))
+            logger.warn(u"Exit {method} threw an exception".format(method=self.method.upper()))
         elif value:
-            logger.fatal("Something wonky happened.")
-            logger.fatal("type={type} value={value} traceback={traceback}".format(type=ext_type, value=value, traceback=traceback))
-            logger.fatal("Exit {method} was definitely dirty".format(method=self.method.upper()))
-        elif self.r.status_code != 200:
-            logger.fatal("Response was not 200 OK: {response}".format(response=self.r))
-            logger.fatal("Path: {url}".format(url=self.r.url))
-            logger.fatal("Response: {text}".format(text=self.r.text))
+            logger.fatal(u"Something wonky happened.")
+            logger.fatal(u"type={type} value={value} traceback={traceback}".format(type=ext_type, value=value, traceback=traceback))
+            logger.fatal(u"Exit {method} was definitely dirty".format(method=self.method.upper()))
+        elif not isinstance(getattr(self, "r", None), requests.models.Response):
+            logger.fatal(u"No response object was returned.")
+        elif self.r.status_code not in [200, 201, 202, 203, 204, 205, 206, 207, 208, 226]:
+            logger.fatal(u"Response was not 2XX: {response}".format(response=self.r))
+            logger.fatal(u"Path: {url}".format(url=self.r.url))
+            logger.fatal(u"Response: {text}".format(text=self.r.text))
         else:
-            logger.debug("Exit {method} was clean".format(method=self.method.upper()))
+            logger.debug(u"Exit {method} was clean".format(method=self.method.upper()))
         return True
 
-class get (MethodManager):
-    """Subclass of MethodManager that handles GET requests."""
-    def __init__ (self, url, *args, **kwargs):
-        """Initializes the GET request."""
-        super(get, self).__init__("get", url, *args, **kwargs)
+    @property
+    def reqs (self):
+        if self.session:
+            return self.session
+        return requests
 
-    def __enter__ (self):
-        """Starts the GET request."""
-        super(get, self).__enter__()
-        self.r = requests.get(self.url, *self.args, **self.kwargs)
-        return self.r
+def bind_verb (verb):
+    class _verb (MethodManager):
+        def __init__ (self, url, *args, **kwargs):
+            super(_verb, self).__init__(verb, url, *args, **kwargs)
+    return _verb
 
-class post (MethodManager):
-    """Subclass of MethodManager that handles POST requests."""
-    def __init__ (self, url, *args, **kwargs):
-        """Initializes the POST request."""
-        super(post, self).__init__("post", url, *args, **kwargs)
-
-    def __enter__ (self):
-        """Starts the POST request."""
-        super(post, self).__enter__()
-        self.r = requests.post(self.url, *self.args, **self.kwargs)
-        return self.r
-
+get = bind_verb("get")
+post = bind_verb("post")
+delete = bind_verb("delete")
 
 def create_url (path, **kwargs):
     url = "{base}{path}".format(base=BASE_URL, path=path)

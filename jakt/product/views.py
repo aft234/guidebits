@@ -4,9 +4,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from utility.annoying import get_or_gone as gog
-from .models import Product
+from .models import Product, Search
 from .forms import ProductForm
-
+from . import tasks
 def all (request):
     data = {}
     data["products"] = Product.objects.all()
@@ -39,3 +39,16 @@ def edit (request, pk):
             return HttpResponseRedirect(reverse("product.views.management"))
     data["form"] = form
     return render(request, "product/edit.html", data)
+
+def searches (request, pk):
+    data = {}
+    data["product"] = product = gog(Product, pk=pk)
+    data["searches"] = product.search_set.all()
+    return render(request, "product/searches.html", data)
+
+def add_search (request, pk):
+    product = gog(Product, pk=pk)
+    search = Search(product=product, status="Queued")
+    search.save()
+    tasks.perform_search.delay(search.pk)
+    return HttpResponseRedirect(reverse("product.views.searches", kwargs={"pk" : product.pk}))
