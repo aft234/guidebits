@@ -10,7 +10,14 @@ def set_from_dict (d, *args):
             new[k] = d.get(k)
     globals().update(new)
 
-INTERNAL_IPS = ("127.0.0.1", "0.0.0.0",)
+# INTERNAL_IPS = ("127.0.0.1", "0.0.0.0",)
+class AllIps ():
+    def __init__ (self):
+        pass
+    def __contains__ (self, ip):
+        return True
+INTERNAL_IPS = AllIps()
+
 
 # Switch out the user model
 AUTH_USER_MODEL = 'supervisor.User'
