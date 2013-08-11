@@ -17,7 +17,6 @@ class Product (DatedModel):
     def related_names_list (self):
         return [ s.strip() for s in self.related_names.lower().split(",") ]
 
-
 class Search (DatedModel):
     product = models.ForeignKey(Product)
     complete = models.BooleanField(default=False)

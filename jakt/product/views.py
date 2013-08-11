@@ -8,8 +8,13 @@ from .models import Product, Search
 from .forms import ProductForm
 from . import tasks
 def all (request):
-    data = {}
-    data["products"] = Product.objects.all()
+    data = { "products" : [] }
+    products = Product.objects.all()
+    for product in products:
+        last_search = None
+        if product.search_set.count():
+            last_search = product.search_set.all()[0]
+        data["products"].append((product, last_search))
     return render(request, "product/all.html", data)
 
 def management (request):
