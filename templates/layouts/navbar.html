@@ -26,6 +26,11 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
+                            {% if user.is_staff %}
+                            <li>
+                                <a href="{% url 'product.views.management' %}">Manage Products</a>
+                            </li>
+                            {% endif %}
                             <li>
                                 <a href="{% url 'sv-logout' %}">Logout</a>
                             </li>
