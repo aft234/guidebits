@@ -6,11 +6,7 @@
 
     <div class="row">
         <h3>Tag Cloud</h3>
-        <p class="tagcloud">
-            {% for word, group, count in search.all_word_pairs %}
-            <a href="#{{ word }}" rel="{{ count }}" title="{{ word|title }} used {{ count }} time{{ count|pluralize }}">{{ word }}</a>
-            {% endfor %}
-        </p>
+        {% include "product/partial/tagcloud.html" with words=search.all_word_pairs %}
         <table class="table table-bordered">
             <thead>
                 <th>Keyword</th>
@@ -18,7 +14,7 @@
                 <th class="initial">Count</th>
             </thead>
             <tbody>
-                {% for word, group, count in search.all_word_pairs %}
+                {% for word, group, count, _ in search.all_word_pairs %}
                 <tr><td sort="{{ word }}">{{ word }}</td><td sort="{{ group }}">{{ group }}</td><td sort="{{ count }}">{{ count }}</td></tr>
                 {% endfor %}
             </tbody>
@@ -41,7 +37,7 @@
 <script type="text/javascript">
     $(function () {
         $.fn.tagcloud.defaults = {
-          size: {start: 8, end: 32, unit: 'pt'},
+          size: {start: 8, end: 28, unit: 'pt'},
           color: {start: '#cde', end: '#f52'}
         };
         $(".tagcloud a").tagcloud()

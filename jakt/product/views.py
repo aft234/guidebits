@@ -7,6 +7,7 @@ from utility.annoying import get_or_gone as gog
 from .models import Product, Search
 from .forms import ProductForm
 from . import tasks
+
 def all (request):
     data = { "products" : [] }
     products = Product.objects.all()

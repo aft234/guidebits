@@ -1,0 +1,5 @@
+<p class="tagcloud">
+    {% for word, group, count, rel in words %}
+    <a href="#{{ word }}" rel="{{ rel }}" title="{{ word|title }} used {{ count }} time{{ count|pluralize }}">{{ word }}</a>
+    {% endfor %}
+</p>
