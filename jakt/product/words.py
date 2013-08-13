@@ -17,3 +17,19 @@ promotional_set = set(promotional.keys())
 
 reaction = {'ah': 'ah', 'ahh': 'ah', 'ahhhh': 'ah', 'ahhhhh': 'ah', 'argh': 'argh', 'boom': 'boom', 'booyah': 'booyah', 'bravo': 'bravo', 'dam': 'damn', 'damn': 'damn', 'dayum': 'damn', 'finally': 'finally', 'fml': 'fml', 'freaked': 'freaked', 'ftw': 'ftw', 'geez': 'geez', 'goddamn': 'damn', 'ha': 'lol', 'haha': 'lol', 'halp': 'help', 'heh': 'heh', 'help': 'help', 'heyooo': 'heyooo', 'hmmm': 'hmmm', 'idk': 'idk', 'kudos': 'kudos', 'laugh': 'lol', 'laughed': 'lol', 'laughing': 'lol', 'laughs': 'lol', 'lmao': 'lol', 'lmfao': 'lol', 'lol': 'lol', 'lololol': 'lol', 'lolz': 'lol', 'meh': 'meh', 'nw': 'nw', 'omfg': 'omg', 'omg': 'omg', 'ouch': 'ouch', 'pow': 'pow', 'rofl': 'lol', 'smh': 'smh', 'smiles': 'smiles', 'welp': 'welp', 'whoa': 'woah', 'whoop': 'whoop', 'whoops': 'whoops', 'woah': 'woah', 'woohoo': 'woohoo', 'wow': 'wow', 'wowza': 'wow', 'wowzer': 'wow', 'wowzers': 'wow', 'wtf': 'wtf', 'yay': 'yay', 'yikes': 'yikes', 'yippee': 'yippy', 'yippy': 'yippy', 'yiss': 'yiss', 'yolo': 'yolo'}
 reaction_set = set(reaction.keys())
+
+def reverse (word):
+    if word in reaction_set:
+        return "reaction"
+    elif word in promotional_set:
+        return "promotional"
+    elif word in possessive_set:
+        return "possessive"
+    elif word in intent_set:
+        return "intent"
+    elif word in descriptor_set:
+        return "descriptor"
+    elif word in emotion_set:
+        return "emotional"
+    else:
+        return "none"

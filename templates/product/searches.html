@@ -22,7 +22,7 @@
             <tbody>
                 {% for search in searches %}
                 <tr>
-                    <td>{{ search.created }}</td>
+                    <td><a href="{% url 'product.views.view_search' pk=search.pk %}">{{ search.created }}</a></td>
                     <td>{{ search.status }}</td>
                     <td>{{ search.total_results|default_if_none:'-' }}</td>
                     <td>{{ search.descriptions|default_if_none:'-'}}</td>

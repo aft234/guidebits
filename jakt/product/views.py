@@ -20,6 +20,7 @@ def all (request):
 def management (request):
     data = {}
     data["products"] = Product.objects.all()
+    data["active_searches"] = Search.objects.filter(complete=False)
     return render(request, "product/management.html", data)
 
 def add (request):
@@ -50,6 +51,11 @@ def searches (request, pk):
     data["product"] = product = gog(Product, pk=pk)
     data["searches"] = product.search_set.all()
     return render(request, "product/searches.html", data)
+
+def view_search (request, pk):
+    data = {}
+    data["search"] = gog(Search, pk=pk)
+    return render(request, "product/view_search.html", data)
 
 def add_search (request, pk):
     product = gog(Product, pk=pk)

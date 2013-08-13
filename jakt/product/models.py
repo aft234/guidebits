@@ -2,7 +2,7 @@ import json
 from django.db import models
 from utility.models import DatedModel
 from utility.annoying import tree_get
-
+from . import words
 class Product (DatedModel):
     name = models.CharField(max_length=255)
     related_names = models.CharField(max_length=255, null=True, blank=True, help_text="Comma separated search terms to use in OR")
@@ -33,12 +33,10 @@ class Search (DatedModel):
 
     def set_results (self, blob):
         self.blob_results = json.dumps(blob)
+
     def get_results (self):
         return json.loads(self.blob_results)
-    # categories = ["descriptor",
-    # "emotion",
-    # "intent", "possessive",
-    # "promotional", "reaction"]
+
     def _total_for_category (self, c):
         results = self.get_results()
         return tree_get(results, c, "num")
@@ -61,6 +59,14 @@ class Search (DatedModel):
     @property
     def intents (self):
         return self._total_for_category("intent")
+
+    @property
+    def all_word_pairs (self):
+        results = self.get_results()
+        for d in results.values():
+            listed_words = d["words"]
+            for w, l in listed_words.iteritems():
+                yield (w, words.reverse(w), l)
 
 class Tweet (DatedModel):
     search = models.ForeignKey(Search)

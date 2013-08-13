@@ -11,24 +11,27 @@
             {% if search %}
             <h4>Search Results</h4>
             <p>Last updated on {{ search.created }}</p>
-            <table class="table table-bordered">
-                <thead>
-                    <th>Category</th>
-                    <th>Count</th>
-                </thead>
-                <tbody>
-                    <tr><td>Descriptions</td><td>{{ search.descriptions|default_if_none:'-'}}</td></tr>
-                    <tr><td>Emotions</td><td>{{ search.emotions|default_if_none:'-' }}</td></tr>
-                    <tr><td>Intents</td><td>{{ search.intents|default_if_none:'-'}}</td></tr>
-                    <tr><td>Possessives</td><td>{{ search.possessives|default_if_none:'-'}}</td></tr>
-                    <tr><td>Promotionals</td><td>{{ search.promotionals|default_if_none:'-'}}</td></tr>
-                    <tr><td>Reactions</td><td>{{ search.reactions|default_if_none:'-'}}</td></tr>
-                </tbody>
-            </table>
+            <p class="tagcloud">
+                {% for word, count in search.all_word_pairs %}
+                <a href="#{{ word }}" rel="{{ count }}" title="{{ word|title }} used {{ count }} time{{ count|pluralize }}">{{ word }}</a>
+                {% endfor %}
+            </p>
             {% endif %}
         </div>
         {% empty %}
         <p class="alert alert-info">No products!</p>
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(function () {
+        $.fn.tagcloud.defaults = {
+          size: {start: 8, end: 32, unit: 'pt'},
+          color: {start: '#cde', end: '#f52'}
+        };
+        $(".tagcloud a").tagcloud()
+    })
+</script>
 {% endblock %}
