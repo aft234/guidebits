@@ -40,7 +40,7 @@
                 <tr>
                     <td><a href="{% url 'product.views.edit' pk=product.pk %}">{{ product.name }}</a></td>
                     <td>{{ product.related_names }}</td>
-                    <td><a href="{% url 'product.views.searches' pk=product.pk %}">{{ product.search_set.count }} search{{ product.search_set.count|pluralize }}</td>
+                    <td><a href="{% url 'product.views.searches' pk=product.pk %}">{{ product.search_set.count }} search{{ product.search_set.count|pluralize:"es" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
