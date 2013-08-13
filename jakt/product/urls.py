@@ -11,4 +11,5 @@ urlpatterns = patterns("product.views",
     url(r"^search/(?P<pk>\d+)$", "searches"),
     url(r"^search/(?P<pk>\d+)/add$", "add_search"),
     url(r"^search/(?P<pk>\d+)/view$", "view_search"),
+    url(r"^search/(?P<pk>\d+)/delete$", "delete_search"),
 )

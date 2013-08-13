@@ -57,6 +57,13 @@ def view_search (request, pk):
     data["search"] = gog(Search, pk=pk)
     return render(request, "product/view_search.html", data)
 
+def delete_search (request, pk):
+    data = {}
+    search = gog(Search, pk=pk)
+    if request.POST and request.POST.get("confirm") == search.product.name:
+        search.delete()
+    return HttpResponseRedirect(reverse("product.views.management"))
+
 def add_search (request, pk):
     product = gog(Product, pk=pk)
     search = Search(product=product, status="Queued")

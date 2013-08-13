@@ -24,6 +24,17 @@
             </tbody>
         </table>
     </div>
+    <div class="row">
+        <div class="alert alert-block alert-error">
+            <h4>Delete This Search</h4>
+            <p>Sometimes it doesn't work out. Enter the product name below and press Delete to remove this search.</p>
+            <form action="{% url 'product.views.delete_search' pk=search.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="text" placeholder="{{ search.product.name }}" name="confirm">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 
 {% block js %}
