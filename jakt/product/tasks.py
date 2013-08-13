@@ -20,11 +20,13 @@ def speak ():
 def perform_search (pk):
     search = gor(Search, pk=pk)
     product = search.product
+    logger.info("Starting search for {0}".format(product.name))
 
     # Do a standard twitter search for the product OR any associated names
     query = " OR ".join(product.related_names_list)
     count = 100
 
+    logger.info("Query is {0}".format(query))
     search.set_status("Finding user for Twitter search")
     # Now find an applicable twitter user, prefer one with >10 search limits available
     possibles = User.objects.exclude(singly_token=None)
@@ -53,6 +55,7 @@ def perform_search (pk):
 
     # Now generate a results map for these statuses
     num_statuses = len(statuses)
+    logger.info("Found {0} statuses".format(num_statuses))
     search.total_results = num_statuses
     search.save()
     result_dict = {}
@@ -89,3 +92,4 @@ def perform_search (pk):
     search.complete = True
     search.set_status("Complete")
     search.save()
+    logger.info("Done performing search")
