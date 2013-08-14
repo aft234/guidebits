@@ -92,4 +92,5 @@ def perform_search (pk):
     search.complete = True
     search.set_status("Complete")
     search.save()
+    product.update_search_cache()
     logger.info("Done performing search")

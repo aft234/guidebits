@@ -10,12 +10,7 @@ from . import tasks
 
 def all (request):
     data = { "products" : [] }
-    products = Product.objects.all()
-    for product in products:
-        last_search = None
-        if product.search_set.count():
-            last_search = product.search_set.all()[0]
-        data["products"].append((product, last_search))
+    data["products"] = Product.objects.all()
     return render(request, "product/all.html", data)
 
 def management (request):
@@ -30,8 +25,8 @@ def add (request):
     if request.POST:
         form = ProductForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("product.views.management"))
+            product = form.save()
+            return HttpResponseRedirect(reverse("product.views.add_search", kwargs={"pk" : product.pk}))
     data["form"] = form
     return render(request, "product/add.html", data)
 

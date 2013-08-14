@@ -5,14 +5,11 @@
 {% block static_content %}
 
     <div class="row">
-        {% for product, search in products %}
+        {% for product in products %}
         <div class="span10">
             <h2>{{ product.name }}</h2>
-            {% if search %}
             <h4>Search Results</h4>
-            <p>Last updated on {{ search.created }}</p>
-            {% include "product/partial/tagcloud.html" with words=search.all_word_pairs %}
-            {% endif %}
+            {% include "product/partial/tagcloud.html" with words=product.all_word_pairs %}
         </div>
         {% empty %}
         <p class="alert alert-info">No products!</p>
