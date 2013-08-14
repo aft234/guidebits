@@ -1,4 +1,5 @@
 import logging
+import math
 logger = logging.getLogger(__name__)
 import json
 from django.db import models
@@ -54,7 +55,7 @@ class Product (DatedModel):
             # zero = max(float(high - low) * 10, high)
             words = sorted(listed_words.iteritems(), key=lambda w: w[1])
             for w, l in words[:25]:
-                yield (w, c, l, l)
+                yield (w, c, l, math.log(l))
             # for w, l in listed_words.iteritems():
                 # percent = float(l) / zero
                 # yield (w, c, l, l)
@@ -108,15 +109,10 @@ class Search (DatedModel):
         results = self.get_results()
         for d in results.values():
             listed_words = d["words"]
-            items = map(lambda (w, l): l, listed_words.iteritems())
             if not items:
                 continue
-            low = min(items)
-            high = max(items)
-            zero = max(float(high - low) * 10, high)
             for w, l in listed_words.iteritems():
-                percent = float(l) / zero
-                yield (w, words.reverse(w), l, percent)
+                yield (w, words.reverse(w), l, math.log(l))
 
 class Tweet (DatedModel):
     search = models.ForeignKey(Search)
