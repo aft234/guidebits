@@ -9,8 +9,9 @@ from . import words
 class Product (DatedModel):
     name = models.CharField(max_length=255)
     related_names = models.CharField(max_length=255, null=True, blank=True, help_text="Comma separated search terms to use in OR")
-    image = models.CharField(max_length=255)
+    image = models.CharField(max_length=255, null=True, blank=True, help_text="Link to image of product")
     search_cache = models.TextField(null=True, blank=True)
+    buy_link = models.CharField(max_length=255, null=True, blank=True, help_text="Referral or direct link to purchase this product")
 
     class Meta:
         ordering = ["created"]
@@ -48,12 +49,16 @@ class Product (DatedModel):
             items = map(lambda (w, l): l, listed_words.iteritems())
             if not items:
                 continue
-            low = min(items)
-            high = max(items)
-            zero = max(float(high - low) * 10, high)
-            for w, l in listed_words.iteritems():
-                percent = float(l) / zero
-                yield (w, c, l, percent)
+            # low = min(items)
+            # high = max(items)
+            # zero = max(float(high - low) * 10, high)
+            words = sorted(listed_words.iteritems(), key=lambda w: w[1])
+            for w, l in words[:25]:
+                yield (w, c, l, l)
+            # for w, l in listed_words.iteritems():
+                # percent = float(l) / zero
+                # yield (w, c, l, l)
+                # pass
 
 class Search (DatedModel):
     product = models.ForeignKey(Product)

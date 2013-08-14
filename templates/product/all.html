@@ -10,6 +10,7 @@
             <h2>{{ product.name }}</h2>
             <h4>Search Results</h4>
             {% include "product/partial/tagcloud.html" with words=product.all_word_pairs %}
+            <p><a href="{{ product.buy_link }}" class="btn btn-large btn-success"><i class="icon-shopping-cart icon-white"></i> Buy Now</a></p>
         </div>
         {% empty %}
         <p class="alert alert-info">No products!</p>
@@ -24,6 +25,7 @@
           size: {start: 8, end: 28, unit: 'pt'},
           color: {start: '#cde', end: '#f52'}
         };
+
         $(".tagcloud a").tagcloud()
     })
 </script>
