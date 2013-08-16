@@ -49,6 +49,8 @@ class Product (DatedModel):
     @property
     def all_word_pairs (self):
         results = self.get_search_cache()
+        if not results:
+            raise StopIteration
         for c, d in results.iteritems():
             listed_words = d["words"]
             items = map(lambda (w, l): l, listed_words.iteritems())
