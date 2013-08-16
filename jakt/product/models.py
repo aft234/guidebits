@@ -31,7 +31,8 @@ class Product (DatedModel):
         self.search_cache = json.dumps(blob)
         self.save()
     def get_search_cache (self):
-        return json.loads(self.search_cache)
+        if self.search_cache:
+            return json.loads(self.search_cache)
 
     def update_search_cache (self):
         categories = { k : { "total" : 0, "words" : {} } for k in words.categories }
@@ -79,7 +80,8 @@ class Search (DatedModel):
         self.blob_results = json.dumps(blob)
 
     def get_results (self):
-        return json.loads(self.blob_results)
+        if self.blob_results:
+            return json.loads(self.blob_results)
 
     def _total_for_category (self, c):
         results = self.get_results()
