@@ -43,10 +43,19 @@ def edit (request, pk):
     return render(request, "product/edit.html", data)
 
 def view_product (request, pk):
+    import time
     data = {}
+    offset = int(request.GET.get("offset", 0))
+    if offset != 0:
+        time.sleep(5)
     data["product"] = gog(Product, pk=pk)
-    data["last_tweets"] = Tweet.objects.filter(product=data["product"], valid=True).order_by("-created_at")[:30]
+    data["last_tweets"] = Tweet.objects.filter(product=data["product"], valid=True).order_by("-created_at")[offset:offset+30]
+    data["offset"] = offset + 30
     return render(request, "product/view_product.html", data)
+
+def tweets_for_product (request, pk):
+    data = {}
+    return render(request, "product/tweets_for_product.html", data)
 
 def searches (request, pk):
     data = {}
