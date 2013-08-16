@@ -34,6 +34,7 @@
                 <th>Name</th>
                 <th>Related Names</th>
                 <th>Searches</th>
+                <th>Tweets</th>
             </thead>
             <tbody>
                 {% for product in products %}
@@ -41,6 +42,7 @@
                     <td><a href="{% url 'product.views.edit' pk=product.pk %}">{{ product.name }}</a></td>
                     <td>{{ product.related_names }}</td>
                     <td><a href="{% url 'product.views.searches' pk=product.pk %}">{{ product.search_set.count }} search{{ product.search_set.count|pluralize:"es" }}</td>
+                    <td><a href="{% url 'product.views.view_tweets' pk=product.pk %}">{{ product.tweet_set.count }} tweet{{ product.tweet_set.count|pluralize:"s" }}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

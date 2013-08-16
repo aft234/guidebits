@@ -1,0 +1,28 @@
+{% extends "layouts/static_page.html" %}
+
+{% block static_title %}Tweets for {{ product.name|title }}{% endblock %}
+
+{% block static_content %}
+    <div class="row" id="tweetrow">
+        {% if tweets %}
+            {% for tweet in tweets %}
+            <div class="span12">
+                {{ tweet.display_as_embed|safe }}
+                <p><a class="show" pk="{{ tweet.pk }}">Show Raw Object</a></p>
+                <pre pk="{{ tweet.pk }}" style="display: none"><code>{{ tweet.raw }}</code></pre>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="alert alert-info alert-block">No tweets found.</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(".show").on("click", function () {
+        $("pre[pk=" + $(this).attr("pk") + "]").show()
+        $(this).parent().hide()
+    })
+</script>
+{% endblock %}

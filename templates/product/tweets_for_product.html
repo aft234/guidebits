@@ -1,0 +1,54 @@
+{% extends "layouts/static_page.html" %}
+
+{% block static_title %}Tweets for {{ product.name|title }}{% endblock %}
+
+{% block static_content %}
+    {% if product.description %}
+    <div class="row">
+        <div class="span10">
+            <p>{{ product.description|safe }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row" id="tweetrow">
+        {% if last_tweets %}
+            {% for tweet in last_tweets %}
+            <div class="span4 infinite-item">
+                {{ tweet.display_as_embed|safe }}
+            </div>
+            {% endfor %}
+            <a class="infinite-more-link" style="display: none" href="{% url 'product.views.view_product' pk=product.pk %}?offset={{ offset }}">more</a>
+        {% else %}
+            <p class="alert alert-info alert-block">No tweets found.</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    @-webkit-keyframes pulse
+    {
+        0% { background-color: rgba(51, 182, 68, 0.2); }
+        50% { background-color: rgba(46, 164, 61, 0.8); }
+        100% { background-color: rgba(51, 182, 68, 0.2); }
+    }
+    .infinite-loading {
+        -webkit-animation: pulse 2s infinite;
+    }
+</style>
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/waypoints.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/waypoints-infinite.min.js"></script>
+<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script type="text/javascript">
+    jQuery(function () {
+        $("#tweetrow").waypoint('infinite', {
+            onAfterPageLoad : function () {
+                twttr.widgets.load()
+            }
+        })
+    })
+</script>
+{% endblock %}

@@ -53,6 +53,12 @@ def view_product (request, pk):
     data["offset"] = offset + 30
     return render(request, "product/view_product.html", data)
 
+def view_tweets (request, pk):
+    data = {}
+    data["product"] = product = gog(Product, pk=pk)
+    data["tweets"] = product.tweet_set.filter(valid=True).order_by("-created_at")
+    return render(request, "product/view_tweets.html", data)
+
 def tweets_for_product (request, pk):
     data = {}
     return render(request, "product/tweets_for_product.html", data)

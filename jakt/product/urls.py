@@ -6,7 +6,7 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns("product.views",
     url(r"^all$", "all"),
     url(r"^(?P<pk>\d+)$", "view_product"),
-    url(r"^(?P<pk>\d+)/tweets$", "tweets_for_product"),
+    url(r"^(?P<pk>\d+)/tweets$", "view_tweets"),
     url(r"^manage$", "management"),
     url(r"^add$", "add"),
     url(r"^edit/(?P<pk>\d+)$", "edit"),
