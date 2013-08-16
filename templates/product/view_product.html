@@ -3,6 +3,13 @@
 {% block static_title %}{{ product.name|title }}{% endblock %}
 
 {% block static_content %}
+    {% if product.description %}
+    <div class="row">
+        <div class="span10">
+            <p>{{ product.description|safe }}</p>
+        </div>
+    </div>
+    {% endif %}
 
     <div class="row">
         {% for tweet in last_tweets %}
