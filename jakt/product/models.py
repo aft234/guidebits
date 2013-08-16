@@ -39,6 +39,8 @@ class Product (DatedModel):
 
         for search in self.search_set.all():
             results = search.get_results()
+            if not results:
+                continue
             for category, result_map in results.iteritems():
                 categories[category]["total"] += result_map.get("num", 0)
                 for w, l in result_map["words"].iteritems():
