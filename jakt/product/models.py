@@ -53,9 +53,6 @@ class Product (DatedModel):
             items = map(lambda (w, l): l, listed_words.iteritems())
             if not items:
                 continue
-            # low = min(items)
-            # high = max(items)
-            # zero = max(float(high - low) * 10, high)
             words = sorted(listed_words.iteritems(), key=lambda w: w[1])
             for w, l in words[:25]:
                 yield (w, c, l, math.log(l))
@@ -112,7 +109,7 @@ class Search (DatedModel):
         results = self.get_results()
         for d in results.values():
             listed_words = d["words"]
-            if not items:
+            if not listed_words:
                 continue
             for w, l in listed_words.iteritems():
                 yield (w, words.reverse(w), l, math.log(l))
