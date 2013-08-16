@@ -67,6 +67,8 @@ def perform_search (pk):
             continue
         if status_text[0:14] == "i'm now ranked":
             continue
+        if status.get("retweeted_status"):
+            continue
         word_set = set(status_text.split(" "))
 
         # For every word category we have defined
