@@ -1,6 +1,6 @@
 {% extends "layouts/static_page.html" %}
 
-{% block static_title %}Tweets for {{ product.name|title }}{% endblock %}
+{% block static_title %}Tweets for <a href="{% url 'product.views.view_product' pk=product.pk %}">{{ product.name|title }}</a>{% endblock %}
 
 {% if user.is_staff %}
 {% block navgroup %}
