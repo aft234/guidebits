@@ -1,6 +1,24 @@
 {% extends "layouts/static_page.html" %}
+{% load humanize %}
 
 {% block static_title %}Searches for <a href="{% url 'product.views.management' %}">{{ product.name }}</a>{% endblock %}
+
+{% if user.is_staff %}
+{% block navgroup %}
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="{% url 'product.views.management' %}">Management</a>
+        <ul class="nav">
+            <li><a href="{% url 'product.views.view_product' pk=product.pk %}">Product Page</a></li>
+            <li><a href="{% url 'product.views.edit' pk=product.pk %}">Edit</a></li>
+            <li class="active"><a href="{% url 'product.views.searches' pk=product.pk %}">Searches</a></li>
+            <li><a href="{% url 'product.views.view_tweets' pk=product.pk %}">Tweets</a></li>
+        </ul>
+      </div>
+    </div>
+
+{% endblock %}
+{% endif %}
 
 {% block static_content %}
 
@@ -12,6 +30,7 @@
                 <th>Started</th>
                 <th>Status</th>
                 <th>Total Tweets</th>
+                <th>Valid Tweets</th>
                 <th>Descriptions</th>
                 <th>Emotions</th>
                 <th>Intents</th>
@@ -24,7 +43,8 @@
                 <tr>
                     <td><a href="{% url 'product.views.view_search' pk=search.pk %}">{{ search.created }}</a></td>
                     <td>{{ search.status }}</td>
-                    <td>{{ search.total_results|default_if_none:'-' }}</td>
+                    <td>{{ search.total_results|default_if_none:'-'|intcomma }}</td>
+                    <td>{{ search.valid_tweets.count|intcomma }}</td>
                     <td>{{ search.descriptions|default_if_none:'-'}}</td>
                     <td>{{ search.emotions|default_if_none:'-' }}</td>
                     <td>{{ search.intents|default_if_none:'-'}}</td>

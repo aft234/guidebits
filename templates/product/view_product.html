@@ -2,6 +2,23 @@
 
 {% block static_title %}{{ product.name|title }}{% endblock %}
 
+{% if user.is_staff %}
+{% block navgroup %}
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="{% url 'product.views.management' %}">Management</a>
+        <ul class="nav">
+            <li class="active"><a href="{% url 'product.views.view_product' pk=product.pk %}">Product Page</a></li>
+            <li><a href="{% url 'product.views.edit' pk=product.pk %}">Edit</a></li>
+            <li><a href="{% url 'product.views.searches' pk=product.pk %}">Searches</a></li>
+            <li><a href="{% url 'product.views.view_tweets' pk=product.pk %}">Tweets</a></li>
+        </ul>
+      </div>
+    </div>
+
+{% endblock %}
+{% endif %}
+
 {% block static_content %}
     {% if product.description %}
     <div class="row">
@@ -10,7 +27,9 @@
         </div>
     </div>
     {% endif %}
-
+    <div class="row">
+        {% include "product/partial/tagcloud.html" with words=product.all_word_pairs %}
+    </div>
     <div class="row" id="tweetrow">
         {% if last_tweets %}
             {% for tweet in last_tweets %}
@@ -49,6 +68,13 @@
                 twttr.widgets.load()
             }
         })
+
+        $.fn.tagcloud.defaults = {
+          size: {start: 8, end: 28, unit: 'pt'},
+          color: {start: '#cde', end: '#f52'}
+        };
+
+        $(".tagcloud a").tagcloud()
     })
 </script>
 {% endblock %}

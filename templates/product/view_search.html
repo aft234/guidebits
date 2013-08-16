@@ -2,9 +2,29 @@
 
 {% block static_title %}Search for <a href="{% url 'product.views.searches' pk=search.product.pk %}">{{ search.product.name }}</a>{% endblock %}
 
+{% if user.is_staff %}
+{% block navgroup %}
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="{% url 'product.views.management' %}">Management</a>
+        <ul class="nav">
+            <li><a href="{% url 'product.views.view_product' pk=product.pk %}">Product Page</a></li>
+            <li><a href="{% url 'product.views.edit' pk=product.pk %}">Edit</a></li>
+            <li class="active"><a href="{% url 'product.views.searches' pk=product.pk %}">Searches</a></li>
+            <li><a href="{% url 'product.views.view_tweets' pk=product.pk %}">Tweets</a></li>
+        </ul>
+      </div>
+    </div>
+
+{% endblock %}
+{% endif %}
+
 {% block static_content %}
 
     <div class="row">
+        {% if not search.complete %}
+        <p class="alert alert-warning alert-block">This search is not complete.</p>
+        {% endif %}
         <h3>Tag Cloud</h3>
         {% include "product/partial/tagcloud.html" with words=search.all_word_pairs %}
         <table class="table table-bordered">

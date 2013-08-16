@@ -54,8 +54,7 @@ class Product (DatedModel):
             items = map(lambda (w, l): l, listed_words.iteritems())
             if not items:
                 continue
-            words = sorted(listed_words.iteritems(), key=lambda w: w[1])
-            for w, l in words[:25]:
+            for w, l in listed_words.iteritems():
                 yield (w, c, l, math.log(l))
             # for w, l in listed_words.iteritems():
                 # percent = float(l) / zero
@@ -105,10 +104,15 @@ class Search (DatedModel):
     @property
     def intents (self):
         return self._total_for_category("intent")
+    @property
+    def valid_tweets (self):
+        return self.tweet_set.filter(valid=True)
 
     @property
     def all_word_pairs (self):
         results = self.get_results()
+        if not results:
+            raise StopIteration
         for d in results.values():
             listed_words = d["words"]
             if not listed_words:

@@ -32,3 +32,13 @@ def requires_login (func=None):
             return view_func(request, *args, **kwargs)
         return _wrapped_view
     return simple_shim(decorator, func)
+
+def requires_staff (func=None):
+    def decorator (view_func):
+        @wraps(view_func, assigned=available_attrs(view_func))
+        def _wrapped_view (request, *args, **kwargs):
+            if not request.user.is_authenticated() or not request.user.is_staff:
+                return HttpResponseRedirect("{0}?next={1}".format(reverse("sv-login"), request.path))
+            return view_func(request, *args, **kwargs)
+        return _wrapped_view
+    return simple_shim(decorator, func)
