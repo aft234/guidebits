@@ -9,7 +9,7 @@ from celery import task
 
 from utility.annoying import get_or_raise as gor, tree_get
 from supervisor.models import User
-from .models import Product, Search
+from .models import Product, Search, Tweet
 from . import words
 
 @task
@@ -58,11 +58,10 @@ def perform_search (pk):
     logger.info("Found {0} statuses".format(num_statuses))
     search.total_results = num_statuses
     search.save()
-    result_dict = {}
-    for c in words.categories:
-        result_dict[c] = { "num" : 0, "words" : {}}
+    result_dict = { c : { "num" : 0, "words" : {} } for c in words.categories }
     for i, status in enumerate(statuses):
         search.set_status("Processing status {0} of {1}".format(i + 1, num_statuses))
+        tweet = Tweet.create(search, status)
         status_text = status.get("text").lower().strip()
         if status_text[0:9] == "i liked a" or status_text[0:13] == "i favorited a" or status_text[0:14] == "i favourited a" or status_text[0:9] == "i added a":
             continue
@@ -76,7 +75,9 @@ def perform_search (pk):
 
             # Grab all the matching words from the tweet
             c_words = word_set & getattr(words, "{0}_set".format(c))
-
+            if not c_words:
+                continue
+            tweet.valid = True
             # Sanitize / reverse those words
             for w in c_words:
                 c_list.append(getattr(words, c)[w])
@@ -87,7 +88,7 @@ def perform_search (pk):
             for w in c_list:
                 result_dict[c]["words"].setdefault(w, 0)
                 result_dict[c]["words"][w] += 1
-
+        tweet.save()
     search.blob_results = json.dumps(result_dict)
     search.complete = True
     search.set_status("Complete")

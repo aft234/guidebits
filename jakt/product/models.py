@@ -1,11 +1,13 @@
 import logging
 import math
-logger = logging.getLogger(__name__)
 import json
+from dateutil.parser import parse as parse_date
 from django.db import models
 from utility.models import DatedModel
 from utility.annoying import tree_get
 from . import words
+
+logger = logging.getLogger(__name__)
 
 class Product (DatedModel):
     name = models.CharField(max_length=255)
@@ -116,7 +118,31 @@ class Search (DatedModel):
 
 class Tweet (DatedModel):
     search = models.ForeignKey(Search)
-    text = models.TextField(null=True, blank=True)
+    product = models.ForeignKey(Product)
+    valid = models.BooleanField(default=False)
+    user_id = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    screen_name = models.CharField(max_length=255)
+    tweet_id = models.CharField(max_length=255)
+    text = models.TextField()
+    created_at = models.DateTimeField()
+    raw = models.TextField()
+
+    @staticmethod
+    def create (search, status):
+        tw = Tweet(search=search, product=search.product)
+        tw.text = tree_get(status, "text")
+        tw.user_id = tree_get(status, "user", "id_str")
+        tw.name = tree_get(status, "user", "name")
+        tw.screen_name = tree_get(status, "user", "screen_name")
+        tw.tweet_id = tree_get(status, "id_str")
+        tw.created_at = parse_date(tree_get(status, "created_at"))
+        tw.raw = json.dumps(status)
+        tw.save()
+        return tw
+
+    def display_as_embed (self):
+        return u'<blockquote class="twitter-tweet"><p>{t.text}</p>&mdash;{t.name} (@{t.screen_name}) <a href="https://twitter.com/{t.screen_name}/status/{t.tweet_id}" data-datetime="{date}">{nice_date}</a></blockquote>'.format(t=self, date=self.created_at.isoformat(), nice_date=self.created_at.strftime("%B %d, %Y"))
 
 class Word (models.Model):
     CATEGORIES = (

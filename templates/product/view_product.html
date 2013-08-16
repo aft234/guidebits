@@ -1,0 +1,20 @@
+{% extends "layouts/static_page.html" %}
+
+{% block static_title %}{{ product.name|title }}{% endblock %}
+
+{% block static_content %}
+
+    <div class="row">
+        {% for tweet in last_tweets %}
+        <div class="span3">
+            {{ tweet.display_as_embed|safe }}
+        </div>
+        {% empty %}
+        <p class="alert alert-info">No tweets found.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block js %}
+<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+{% endblock %}

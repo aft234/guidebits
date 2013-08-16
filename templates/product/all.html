@@ -7,7 +7,7 @@
     <div class="row">
         {% for product in products %}
         <div class="span10">
-            <h2>{{ product.name }}</h2>
+            <h2><a href="{% url 'product.views.view_product' pk=product.pk %}">{{ product.name }}</a></h2>
             <h4>Search Results</h4>
             {% include "product/partial/tagcloud.html" with words=product.all_word_pairs %}
             <p><a href="{{ product.buy_link }}" class="btn btn-large btn-success"><i class="icon-shopping-cart icon-white"></i> Buy Now</a></p>

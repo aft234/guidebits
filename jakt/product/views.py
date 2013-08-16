@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from utility.annoying import get_or_gone as gog
-from .models import Product, Search
+from .models import Product, Search, Tweet
 from .forms import ProductForm
 from . import tasks
 
@@ -41,6 +41,12 @@ def edit (request, pk):
             return HttpResponseRedirect(reverse("product.views.management"))
     data["form"] = form
     return render(request, "product/edit.html", data)
+
+def view_product (request, pk):
+    data = {}
+    data["product"] = gog(Product, pk=pk)
+    data["last_tweets"] = Tweet.objects.filter(product=data["product"], valid=True).order_by("-created_at")[:30]
+    return render(request, "product/view_product.html", data)
 
 def searches (request, pk):
     data = {}
