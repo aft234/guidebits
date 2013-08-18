@@ -27,18 +27,7 @@
         {% endif %}
         <h3>Tag Cloud</h3>
         {% include "product/partial/tagcloud.html" with words=search.all_word_pairs %}
-        <table class="table table-bordered">
-            <thead>
-                <th>Keyword</th>
-                <th>Group</th>
-                <th class="initial">Count</th>
-            </thead>
-            <tbody>
-                {% for word, group, count, _ in search.all_word_pairs %}
-                <tr><td sort="{{ word }}">{{ word }}</td><td sort="{{ group }}">{{ group }}</td><td sort="{{ count }}">{{ count }}</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        {% include "product/partial/wordtable.html" with words=search.all_word_pairs %}
     </div>
     <div class="row">
         <div class="alert alert-block alert-error">

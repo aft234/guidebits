@@ -69,13 +69,14 @@ def searches (request, pk):
     data = {}
     data["product"] = product = gog(Product, pk=pk)
     data["searches"] = product.search_set.all()
+    data["word_pairs"] = product.all_word_pairs
     return render(request, "product/searches.html", data)
 
 @requires_staff
 def view_search (request, pk):
     data = {}
-    data["search"] = gog(Search, pk=pk)
-    data["product"] = data["search"].product
+    data["search"] = search = gog(Search, pk=pk)
+    data["product"] = search.product
     return render(request, "product/view_search.html", data)
 
 @requires_staff

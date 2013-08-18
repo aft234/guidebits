@@ -1,0 +1,12 @@
+<table class="table table-bordered table-sorted">
+    <thead>
+        <th>Keyword</th>
+        <th>Group</th>
+        <th class="initial">Count</th>
+    </thead>
+    <tbody>
+        {% for word, group, count, _ in words %}
+        <tr><td sort="{{ word }}">{{ word }}</td><td sort="{{ group }}">{{ group }}</td><td sort="{{ count }}">{{ count }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
