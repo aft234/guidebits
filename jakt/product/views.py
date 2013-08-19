@@ -12,6 +12,7 @@ from . import tasks
 def all (request):
     data = { "products" : [] }
     data["products"] = Product.objects.all()
+    data["latest_tweets"] = Tweet.objects.filter(valid=True)[:30]
     return render(request, "product/all.html", data)
 
 @requires_staff

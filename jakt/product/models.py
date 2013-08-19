@@ -136,6 +136,10 @@ class Tweet (DatedModel):
     created_at = models.DateTimeField()
     raw = models.TextField()
 
+    class Meta:
+        ordering = ["-created_at"]
+        # unique_together = [ ("product", "tweet_ida")]
+
     @staticmethod
     def create (search, status):
         tw = Tweet(search=search, product=search.product)

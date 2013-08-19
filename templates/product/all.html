@@ -5,22 +5,36 @@
 {% block static_content %}
 
     <div class="row">
-        {% for product in products %}
-        <div class="span10">
-            <h2><a href="{% url 'product.views.view_product' pk=product.pk %}">{{ product.name }}</a></h2>
-            <h4>Search Results</h4>
-            {% include "product/partial/tagcloud.html" with words=product.all_word_pairs %}
-            {% if product.buy_link %}
-            <p><a href="{{ product.buy_link }}" class="btn btn-large btn-success"><i class="icon-shopping-cart icon-white"></i> Buy Now</a></p>
-            {% endif %}
+        <div class="span7">
+            {% for product in products %}
+                {% if product.image %}
+                <div class="span2"><img src="{{ product.image }}" class="img-polaroid"></div>
+                {% endif %}
+                <div class="span4">
+                    <h2><a href="{% url 'product.views.view_product' pk=product.pk %}">{{ product.name }}</a></h2>
+                </div>
+                <div class="span7">
+                <h4>Trending Words</h4>
+                {% include "product/partial/tagcloud.html" with words=product.all_word_pairs %}
+                {% if product.buy_link %}
+                    <p><a href="{{ product.buy_link }}" class="btn btn-large btn-success"><i class="icon-shopping-cart icon-white"></i> Buy Now</a></p>
+                {% endif %}
+                </div>
+            {% empty %}
+            <p class="alert alert-info">No products!</p>
+            {% endfor %}
         </div>
-        {% empty %}
-        <p class="alert alert-info">No products!</p>
-        {% endfor %}
+        <div class="span4" style="margin-left: 50px">
+            <h3>Latest Tweets</h3>
+            {% for tweet in latest_tweets %}
+            {{ tweet.display_as_embed|safe }}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
 
 {% block js %}
+<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script type="text/javascript">
     $(function () {
         $.fn.tagcloud.defaults = {

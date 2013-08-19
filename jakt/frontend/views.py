@@ -8,9 +8,10 @@ logger = logging.getLogger(__name__)
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.exceptions import PermissionDenied
-
+from product import views as pviews
 def home (request):
-    return render(request, "frontend/home.html")
+    return pviews.all(request)
+    # return render(request, "frontend/home.html")
 
 def about (request):
     return render(request, "frontend/about.html", {"current": "about"})
