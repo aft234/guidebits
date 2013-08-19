@@ -11,14 +11,16 @@
                 <div class="span2"><img src="{{ product.image }}" class="img-polaroid"></div>
                 {% endif %}
                 <div class="span4">
-                    <h2><a href="{% url 'product.views.view_product' pk=product.pk %}">{{ product.name }}</a></h2>
+                    <h2>
+                        <a href="{% url 'product.views.view_product' pk=product.pk %}">{{ product.name }}</a>
+                        {% if product.buy_link %}
+                        &nbsp;&nbsp;&nbsp;<a href="{{ product.buy_link }}" class="btn btn-success" style="margin-top: 5px;display:inline-block;float:right"><i class="icon-shopping-cart icon-white" style="margin-top:3px"></i>&nbsp;&nbsp;Buy Now</a>
+                        {% endif %}
+                    </h2>
                 </div>
                 <div class="span7">
                 <h4>Trending Words</h4>
                 {% include "product/partial/tagcloud.html" with words=product.all_word_pairs %}
-                {% if product.buy_link %}
-                    <p><a href="{{ product.buy_link }}" class="btn btn-large btn-success"><i class="icon-shopping-cart icon-white"></i> Buy Now</a></p>
-                {% endif %}
                 </div>
             {% empty %}
             <p class="alert alert-info">No products!</p>
