@@ -38,7 +38,7 @@
             </thead>
             <tbody>
                 {% for product in products %}
-                <tr>
+                <tr{% if not product.active %} class="error"{% endif %}>
                     <td><a href="{% url 'product.views.view_product' pk=product.pk %}">{{ product.name }}</a></td>
                     <td>{{ product.related_names }}</td>
                     <td><a href="{% url 'product.views.searches' pk=product.pk %}">{{ product.search_set.count }} search{{ product.search_set.count|pluralize:"es" }}</td>

@@ -16,6 +16,7 @@ class Product (DatedModel):
     search_cache = models.TextField(null=True, blank=True)
     buy_link = models.CharField(max_length=255, null=True, blank=True, help_text="Referral or direct link to purchase this product")
     description = models.TextField(null=True, blank=True, help_text="HTML Description for the product")
+    active = models.BooleanField(default=True)
 
     class Meta:
         ordering = ["created"]

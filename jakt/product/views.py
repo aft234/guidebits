@@ -11,7 +11,7 @@ from . import tasks
 
 def all (request):
     data = { "products" : [] }
-    data["products"] = Product.objects.all()
+    data["products"] = Product.objects.filter(active=True)
     data["latest_tweets"] = Tweet.objects.filter(valid=True)[:30]
     return render(request, "product/all.html", data)
 
@@ -53,7 +53,7 @@ def view_product (request, pk):
     offset = int(request.GET.get("offset", 0))
     if offset != 0:
         time.sleep(5)
-    data["product"] = gog(Product, pk=pk)
+    data["product"] = gog(Product, pk=pk, active=True)
     data["last_tweets"] = Tweet.objects.filter(product=data["product"], valid=True).order_by("-created_at")[offset:offset+30]
     data["offset"] = offset + 30
     return render(request, "product/view_product.html", data)
