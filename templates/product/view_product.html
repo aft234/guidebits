@@ -2,8 +2,9 @@
 
 {% block static_title %}{{ product.name|title }}{% endblock %}
 
-{% if user.is_staff %}
+
 {% block navgroup %}
+{% if user.is_staff %}
     <div class="navbar">
       <div class="navbar-inner">
         <a class="brand" href="{% url 'product.views.management' %}">Management</a>
@@ -15,9 +16,8 @@
         </ul>
       </div>
     </div>
-
-{% endblock %}
 {% endif %}
+{% endblock %}
 
 {% block static_content %}
     {% if product.description %}
