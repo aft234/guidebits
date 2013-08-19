@@ -53,7 +53,9 @@ def view_product (request, pk):
     offset = int(request.GET.get("offset", 0))
     if offset != 0:
         time.sleep(5)
-    data["product"] = gog(Product, pk=pk, active=True)
+    data["product"] = gog(Product, pk=pk)
+    if not request.user.is_staff:
+        data["product"] = gog(Product, pk=pk, active=True)
     data["last_tweets"] = Tweet.objects.filter(product=data["product"], valid=True).order_by("-created_at")[offset:offset+30]
     data["offset"] = offset + 30
     return render(request, "product/view_product.html", data)
