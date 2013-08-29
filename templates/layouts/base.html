@@ -70,6 +70,7 @@
                 mixpanel.track("trendword.clicked", { "word" : $(this).attr("word") })
             })
             mixpanel.track_links(".js-track-link")
+            mixpanel.track("page.load")
         })
     </script>
     {% block js %}{% endblock %}
