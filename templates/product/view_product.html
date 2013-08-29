@@ -65,7 +65,8 @@
     jQuery(function () {
         $("#tweetrow").waypoint('infinite', {
             onAfterPageLoad : function () {
-                twttr.widgets.load()
+                twttr.widgets.load();
+                mixpanel.track("product.more_tweets", { "pk" : "{{ product.pk }}", "name" : "{{ product.name }}" })
             }
         })
 
@@ -75,6 +76,7 @@
         };
 
         $(".tagcloud a").tagcloud()
+        mixpanel.track("product.view", { "pk" : "{{ product.pk }}", "name" : "{{ product.name }}" })
     })
 </script>
 {% endblock %}

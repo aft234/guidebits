@@ -18,7 +18,6 @@ class AllIps ():
         return True
 INTERNAL_IPS = AllIps()
 
-
 # Switch out the user model
 AUTH_USER_MODEL = 'supervisor.User'
 

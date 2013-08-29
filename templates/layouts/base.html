@@ -49,8 +49,9 @@
     {% if debug %}
         <script src="{{ STATIC_URL }}js/less.min.js" type="text/javascript"></script>
     {% else %}
-        {% include "layouts/tracking.html" %}
+
     {% endif %}
+    {% include "layouts/tracking.html" %}
 
     <!-- JS -->
     <!-- jQuery -->
@@ -63,7 +64,14 @@
     <script src="http://squaresend.com/squaresend.js"></script>
     <!-- Tag cloud -->
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tagcloud.js"></script>
-
+    <script type="text/javascript">
+        jQuery(function done_loading ($) {
+            $(".tagword").on("click", function () {
+                mixpanel.track("trendword.clicked", { "word" : $(this).attr("word") })
+            })
+            mixpanel.track_links(".js-track-link")
+        })
+    </script>
     {% block js %}{% endblock %}
 
 </body>

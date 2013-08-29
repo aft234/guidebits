@@ -11,10 +11,10 @@
             <div class="nav-collapse collapse">
                 <ul class="nav pull-right">
                     <li {% if current == "about" %} class="active" {% endif %}>
-                        <a href="{% url 'about' %}">About</a>
+                        <a class="js-track-link" href="{% url 'about' %}">About</a>
                     </li>
                     <li {% if current == "contact" %} class="active" {% endif %}>
-                        <a href="{% url 'contact' %}">Contact Us</a>
+                        <a class="js-track-link" href="{% url 'contact' %}">Contact Us</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="dropdown">
@@ -29,16 +29,16 @@
                             </li>
                             {% endif %}
                             <li>
-                                <a href="{% url 'product.views.all' %}">View Products</a>
+                                <a class="js-track-link" href="{% url 'product.views.all' %}">View Products</a>
                             </li>
                             <li>
-                                <a href="{% url 'sv-logout' %}">Logout</a>
+                                <a class="js-track-link" href="{% url 'sv-logout' %}">Logout</a>
                             </li>
                         </ul>
                     </li>
                     {% else %}
                     <li class="">
-                        <a href="{% url 'sv-login' %}">Login</a>
+                        <a class="js-track-link" href="{% url 'sv-login' %}">Login</a>
                     </li>
                     {% endif %}
                 </ul>

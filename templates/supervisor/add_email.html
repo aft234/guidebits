@@ -17,3 +17,11 @@
 
     </div>
 {% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    jQuery(function ($) {
+        mixpanel.track("user.signup")
+    })
+</script>
+{% endblock %}

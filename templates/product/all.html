@@ -12,13 +12,13 @@
                 {% endif %}
                 <div class="span4">
                     <h2>
-                        <a href="{% url 'product.views.view_product' pk=product.pk %}">{{ product.name }}</a>
+                        <a class="js-track-link" href="{% url 'product.views.view_product' pk=product.pk %}">{{ product.name }}</a>
                     </h2>
                 </div>
                 {% if product.buy_link %}
                 <div class="span7">
                     <p style="margin-top:10px">
-                        <a href="{{ product.buy_link }}" class="btn btn-success" style=""><i class="icon-shopping-cart icon-white" style="margin-top:3px"></i>&nbsp;Buy Now</a>
+                        <a href="{{ product.buy_link }}" class="btn btn-success js-track-link" style=""><i class="icon-shopping-cart icon-white" style="margin-top:3px"></i>&nbsp;Buy Now</a>
                     </p>
                 </div>
                 {% endif %}
